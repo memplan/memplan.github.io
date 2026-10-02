@@ -4,7 +4,7 @@ from urllib.request import urlopen, Request
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 csv_path = os.path.join(script_dir, 'lehrplan_merged.csv')
-with open(csv_path, newline='') as f:
+with open(csv_path, newline='', encoding='utf-8') as f:
     our_hks = set(r['ID HK'] for r in csv.DictReader(f))
 
 base_url = 'https://skills.futuremem.swiss/de/data/2000_hkp_'

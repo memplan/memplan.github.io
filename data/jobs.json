@@ -1,0 +1,90 @@
+{
+  "AA": {
+    "name": "Anlagen- und Apparatebauer/in EFZ",
+    "title": "Lernziele Anlagen- und Apparatebauer EFZ",
+    "short": "Anlagen_Apparatebauer",
+    "accent": "#1d4f4b",
+    "accentSoft": "#e2ecea",
+    "futuremem": "https://skills.futuremem.swiss/de/1111_aa/0000_qualiprofil/",
+    "beccShow": "https://www.becc.admin.ch/becc/public/bvz/beruf/show/44703",
+    "beccPlan": "https://www.becc.admin.ch/becc/public/bvz/beruf/download/17112",
+    "verordnung": "https://www.fedlex.admin.ch/eli/cc/2025/577/de"
+  },
+  "KR": {
+    "name": "Konstrukteur/in EFZ",
+    "title": "Lernziele Konstrukteur EFZ",
+    "short": "Konstrukteur",
+    "accent": "#3a3260",
+    "accentSoft": "#e7e4ef",
+    "futuremem": "https://skills.futuremem.swiss/de/3333_kr/0000_qualiprofil/",
+    "beccShow": "https://www.becc.admin.ch/becc/public/bvz/beruf/show/64209",
+    "beccPlan": "https://www.becc.admin.ch/becc/public/bvz/beruf/download/17224",
+    "verordnung": "https://www.fedlex.admin.ch/eli/cc/2025/570/de"
+  },
+  "MP": {
+    "name": "Mechanikpraktiker/in EBA",
+    "title": "Lernziele Mechanikpraktiker EBA",
+    "short": "Mechanikpraktiker",
+    "accent": "#6d4715",
+    "accentSoft": "#efe7dc",
+    "futuremem": "https://skills.futuremem.swiss/de/5500_mp/0000_qualiprofil/",
+    "beccShow": "https://www.becc.admin.ch/becc/public/bvz/beruf/show/45907",
+    "beccPlan": "https://www.becc.admin.ch/becc/public/bvz/beruf/download/17176",
+    "verordnung": "https://www.fedlex.admin.ch/eli/cc/2025/571/de"
+  },
+  "PR": {
+    "name": "Produktionsmechaniker/in EFZ",
+    "title": "Lernziele Produktionsmechaniker EFZ",
+    "short": "Produktionsmechaniker",
+    "accent": "#6b2420",
+    "accentSoft": "#f0e4e2",
+    "futuremem": "https://skills.futuremem.swiss/de/5550_pr/0000_qualiprofil/",
+    "beccShow": "https://www.becc.admin.ch/becc/public/bvz/beruf/show/45717",
+    "beccPlan": "https://www.becc.admin.ch/becc/public/bvz/beruf/download/17144",
+    "verordnung": "https://www.fedlex.admin.ch/eli/cc/2025/573/de"
+  },
+  "PM": {
+    "name": "Polymechaniker/in EFZ",
+    "title": "Lernziele Polymechaniker EFZ",
+    "short": "Polymechaniker",
+    "accent": "#232f47",
+    "accentSoft": "#e6eaf0",
+    "futuremem": "https://skills.futuremem.swiss/de/5555_pm/0000_qualiprofil/",
+    "beccShow": "https://www.becc.admin.ch/becc/public/bvz/beruf/show/45708",
+    "beccPlan": "https://www.becc.admin.ch/becc/public/bvz/beruf/download/17128",
+    "verordnung": "https://www.fedlex.admin.ch/eli/cc/2025/572/de"
+  },
+  "AM": {
+    "name": "Automatikmonteur/in EFZ",
+    "title": "Lernziele Automatikmonteur EFZ",
+    "short": "Automatikmonteur",
+    "accent": "#2b383f",
+    "accentSoft": "#e7eaec",
+    "futuremem": "https://skills.futuremem.swiss/de/7770_am/0000_qualiprofil/",
+    "beccShow": "https://www.becc.admin.ch/becc/public/bvz/beruf/show/46427",
+    "beccPlan": "https://www.becc.admin.ch/becc/public/bvz/beruf/download/17160",
+    "verordnung": "https://www.fedlex.admin.ch/eli/cc/2025/576/de"
+  },
+  "AU": {
+    "name": "Automatiker/in EFZ",
+    "title": "Lernziele Automatiker EFZ",
+    "short": "Automatiker",
+    "accent": "#1f3c68",
+    "accentSoft": "#e4ebf3",
+    "futuremem": "https://skills.futuremem.swiss/de/7777_au/0000_qualiprofil/",
+    "beccShow": "https://www.becc.admin.ch/becc/public/bvz/beruf/show/47422",
+    "beccPlan": "https://www.becc.admin.ch/becc/public/bvz/beruf/download/17208",
+    "verordnung": "https://www.fedlex.admin.ch/eli/cc/2025/575/de"
+  },
+  "ET": {
+    "name": "Elektroniker/in EFZ",
+    "title": "Lernziele Elektroniker EFZ",
+    "short": "Elektroniker",
+    "accent": "#245029",
+    "accentSoft": "#e5ede5",
+    "futuremem": "https://skills.futuremem.swiss/de/9999_et/0000_qualiprofil/",
+    "beccShow": "https://www.becc.admin.ch/becc/public/bvz/beruf/show/46506",
+    "beccPlan": "https://www.becc.admin.ch/becc/public/bvz/beruf/download/17192",
+    "verordnung": "https://www.fedlex.admin.ch/eli/cc/2025/574/de"
+  }
+}

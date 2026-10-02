@@ -14,7 +14,7 @@ files = [
 
 out_path = os.path.join(script_dir, 'lehrplan_merged.csv')
 
-with open(out_path, 'w', newline='') as fout:
+with open(out_path, 'w', newline='', encoding='utf-8') as fout:
     writer = None
     for f in files:
         wb = openpyxl.load_workbook(f)
@@ -33,12 +33,12 @@ with open(out_path, 'w', newline='') as fout:
             else:
                 writer.writerows(rows[1:])
 
-with open(out_path, 'r', newline='') as f:
+with open(out_path, 'r', newline='', encoding='utf-8') as f:
     rows = list(csv.reader(f))
 
 cleaned = [[cell.replace('\n', ' ').replace('\r', ' ').replace('_x000D_', '') for cell in row] for row in rows]
 
-with open(out_path, 'w', newline='') as f:
+with open(out_path, 'w', newline='', encoding='utf-8') as f:
     w = csv.writer(f)
     w.writerows(cleaned)
 

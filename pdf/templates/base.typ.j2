@@ -11,8 +11,8 @@ DESIGN — Farben, Schriften, Abstände
 Hier lässt sich die komplette Optik anpassen.
 ============================================================
 #}
-#let accent = rgb("#16213e")
-#let accent-soft = rgb("#e9edf5")
+#let accent = rgb("{{ accent }}")
+#let accent-soft = rgb("{{ accent_soft }}")
 #let wahl-soft = rgb("#e7e9ee")
 #let muted = rgb("#5b6474")
 #let faint = rgb("#8a93a6")
@@ -21,7 +21,7 @@ Hier lässt sich die komplette Optik anpassen.
 #show heading: set text(weight: "bold")
 #show heading.where(level: 1): set text(size: 15pt, fill: accent)
 #show heading.where(level: 2): set text(size: 12pt, fill: accent)
-#show heading.where(level: 3): set text(size: 10.5pt, fill: rgb("#22304a"))
+#show heading.where(level: 3): set text(size: 10.5pt, fill: accent)
 #show heading.where(level: 1): it => [#it #v(3pt) #line(length: 100%, stroke: 1.5pt + accent)]
 #show heading.where(level: 1): set block(above: 6pt, below: 8pt)
 #show heading.where(level: 2): set block(above: 14pt, below: 7pt)

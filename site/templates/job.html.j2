@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ job.title }}</title>
+  <base href="../">
+  <script>window.JOB = "{{ code }}";</script>
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="job-{{ code }}">
+  <div class="container">
+    <nav class="job-nav" aria-label="Beruf wechseln">
+      <a class="job-nav-home" href="../">Übersicht</a>
+      <div class="job-nav-links">
+        {% for c, j in jobs.items() %}
+          {% if c == code %}
+        <span class="job-nav-link current" aria-current="page" title="{{ j.name }}">{{ c }}</span>
+          {% else %}
+        <a class="job-nav-link" href="../{{ c }}/" title="{{ j.name }}">{{ c }}</a>
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% if pdf_links %}
+      <div class="pdf-dropdown">
+        <button class="pdf-toggle-btn" id="pdfToggleBtn">
+          <span class="pdf-icon">📄</span>
+          <span class="pdf-text">PDFs</span>
+          <span class="dropdown-arrow">▼</span>
+        </button>
+        <div class="pdf-dropdown-menu" id="pdfDropdownMenu">
+          {% for pdf in pdf_links %}
+          <a href="{{ pdf.href }}" class="pdf-item" download>
+            <span class="pdf-icon-small">📄</span>
+            <span class="pdf-item-name">{{ pdf.label }}</span>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </nav>
+
+    <header class="page-header">
+      <p class="eyebrow">{{ code }} · {{ job.name }}</p>
+      <h1>{{ job.title }}</h1>
+      <p class="subtitle" id="subtitle">Laden...</p>
+    </header>
+
+    <div class="controls">
+      <div class="search-row">
+        <input type="text" id="search" placeholder="Suche nach Code oder Kriterium..." autocomplete="off">
+        <span class="count" id="count"></span>
+      </div>
+      <div class="filter-row" id="filters">
+        <div class="filter-group">
+          <label>Alle</label>
+          <div class="options">
+            <button id="toggle-all" class="toggle-all-btn">Alle einklappen</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="results"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

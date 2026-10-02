@@ -4,15 +4,15 @@ from collections import defaultdict
 script_dir = os.path.dirname(os.path.abspath(__file__))
 csv_path = os.path.join(script_dir, 'lehrplan_merged.csv')
 
-with open(csv_path, newline='') as f:
+with open(csv_path, newline='', encoding='utf-8') as f:
     rows = list(csv.DictReader(f))
 
 hkb_path = os.path.join(script_dir, 'hkb_beschreibung.json')
-with open(hkb_path) as f:
+with open(hkb_path, encoding='utf-8') as f:
     hkb_data = json.load(f)
 
 hk_path = os.path.join(script_dir, 'hk_beschreibung.json')
-with open(hk_path) as f:
+with open(hk_path, encoding='utf-8') as f:
     hk_data = json.load(f)
 
 lk_groups = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
@@ -93,8 +93,13 @@ for bpl, hks in lk_groups.items():
         bpl_entry['handlungskompetenzbereiche'].append(hkb_entry)
     result[bpl] = bpl_entry
 
-out_path = os.path.join(script_dir, 'lehrplan.json')
-with open(out_path, 'w', encoding='utf-8') as f:
-    json.dump(result, f, ensure_ascii=False, indent=2)
+out_paths = []
+for bpl, bpl_entry in result.items():
+    out_path = os.path.join(script_dir, f'lehrplan_{bpl}.json')
+    with open(out_path, 'w', encoding='utf-8') as f:
+        json.dump({bpl: bpl_entry}, f, ensure_ascii=False, indent=2)
+    out_paths.append(out_path)
 
-print(f'Done. {len(result)} BPLs, JSON written to {out_path}')
+print(f'Done. {len(result)} BPLs, JSON written to:')
+for p in out_paths:
+    print(f'  {p}')

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MEM Plan – Lehrpläne der MEM-Berufe</title>
+  <meta name="description" content="Interaktive Bildungspläne für die berufliche Grundbildung in der Maschinen-, Elektro- und Metall-Industrie.">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+    <header class="page-header">
+      <p class="eyebrow">MEM Plan</p>
+      <h1>Lehrpläne der MEM-Berufe</h1>
+      <p class="lead">
+        Interaktive Bildungspläne für die berufliche Grundbildung in der Maschinen-, Elektro- und
+        Metall-Industrie. Aufbereitet nach den offiziellen Vorgaben von Swissmem / FutureMEM.
+      </p>
+      <p class="page-stats">
+        <span><strong>{{ stats.jobs }}</strong> Berufe</span>
+        <span><strong>{{ stats.lernkriterien }}</strong> Leistungskriterien</span>
+        <span><strong>{{ stats.lernziele }}</strong> Lernziele</span>
+      </p>
+    </header>
+
+    <section class="section">
+      <h2 class="section-label">Berufe</h2>
+      <div class="job-grid">
+        {% for code, job in jobs.items() %}
+        <a class="job-card job-{{ code }}" href="{{ code }}/">
+          <span class="job-card-media">
+            <img src="img/jobs/{{ code }}.jpg" alt="{{ job.name }}" loading="lazy">
+          </span>
+          <span class="job-card-body">
+            <span class="job-card-head">
+              <span class="job-code">{{ code }}</span>
+              <span class="job-name">{{ job.name }}</span>
+            </span>
+            <span class="job-card-cta">Lernziele ansehen &rarr;</span>
+          </span>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-label">Begriffe &amp; Erklärungen</h2>
+      <div class="info-box">
+        <div class="info-content open">
+          <p class="info-intro">
+            Die Lernziele sind hierarchisch aufgebaut: Handlungskompetenzbereiche bündeln
+            Handlungskompetenzen, diese werden in Leistungskriterien und – je nach Lernort –
+            in Lernziele unterteilt.
+          </p>
+          <dl class="level-cards">
+            <div class="level-card">
+              <dt><span class="lvl-badge lvl-hkb">HKB</span> Handlungskompetenzbereich</dt>
+              <dd>Übergeordnete Kategorie beruflicher Handlungskompetenzen, z.&nbsp;B. Entwickeln, Fertigen oder Programmieren. Wird im Stundenplan geführt und im Zeugnis bewertet.</dd>
+            </div>
+            <div class="level-card">
+              <dt><span class="lvl-badge lvl-hk">HK</span> Handlungskompetenz</dt>
+              <dd>Konkrete berufliche Handlungsfähigkeit, die mehrere Leistungskriterien umfasst. Jedes Fach enthält zwei bis zehn Handlungskompetenzen.</dd>
+            </div>
+            <div class="level-card">
+              <dt><span class="lvl-badge lvl-lk">LK</span> Leistungskriterium</dt>
+              <dd>Unterteilung einer Handlungskompetenz in einzelne, überprüfbare Kriterien (früher: Ressourcen im KoRe-Katalog).</dd>
+            </div>
+            <div class="level-card">
+              <dt><span class="lvl-badge lvl-lz">LZ</span> Lernziel</dt>
+              <dd>Für Berufsfachschule und überbetriebliche Kurse werden Leistungskriterien zusätzlich in Lernziele unterteilt. Für den Lernort Betrieb gibt es ausschliesslich Leistungskriterien.</dd>
+            </div>
+          </dl>
+          <p class="info-note">
+            Lernziele gemäss den offiziellen Bildungsplänen, erstellt von Swissmem. Lernzieldaten von
+            <a href="https://skills.futuremem.swiss/">skills.futuremem.swiss</a>.
+            Der Code dieses Projekts ist Open Source:
+            <a href="https://github.com/memplan/memplan.github.io">github.com/memplan/memplan.github.io</a>.
+            Fehler bitte als GitHub-Issue erfassen.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-label">Links</h2>
+      <ul class="job-links">
+        {% for code, job in jobs.items() %}
+        <li>
+          <a class="job-links-name" href="{{ code }}/">{{ job.name }}</a>
+          <span class="job-links-links">
+            <a href="{{ job.beccPlan }}">Bildungsplan</a>
+            <a href="{{ job.beccShow }}">SBFI-Übersicht</a>
+            <a href="{{ job.verordnung }}">Verordnung</a>
+            <a href="{{ job.futuremem }}">Lernzieldaten</a>
+          </span>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+  </div>
+</body>
+
+</html>

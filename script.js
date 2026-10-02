@@ -6,9 +6,10 @@ let totalLzCount = 0, totalLkCount = 0;
 document.getElementById("subtitle").textContent = "Lade Daten...";
 
 (async () => {
-  const res = await fetch("data/lehrplan.json");
+  const JOB = window.JOB || (location.pathname.split("/").filter(Boolean)[0] || "ET");
+  const res = await fetch("data/lehrplan_" + JOB + ".json");
   DATA = await res.json();
-  const et = DATA.ET;
+  const et = DATA[JOB];
 
   et.handlungskompetenzbereiche.sort((a, b) => a["ID HKB"].localeCompare(b["ID HKB"]));
   const minSem = (obj) => {
@@ -219,7 +220,7 @@ document.getElementById("subtitle").textContent = "Lade Daten...";
 
         let renderedAny = false;
 
-        for (const hkb of DATA.ET.handlungskompetenzbereiche) {
+        for (const hkb of DATA[JOB].handlungskompetenzbereiche) {
           if (!checkFilter(state.hkbs, hkb["ID HKB"])) continue;
           const hkbMatches = nodeMatch([hkb["ID HKB"], hkb["Name"]]);
           let hasVisibleHk = false;
@@ -284,7 +285,7 @@ document.getElementById("subtitle").textContent = "Lade Daten...";
         }
       }
     } else {
-      for (const hkb of DATA.ET.handlungskompetenzbereiche) {
+      for (const hkb of DATA[JOB].handlungskompetenzbereiche) {
         if (!checkFilter(state.hkbs, hkb["ID HKB"])) continue;
         let hasVisibleHk = false;
         const hkbDiv = createSection('subject', hkb, null, openClass);
@@ -592,30 +593,34 @@ document.getElementById("subtitle").textContent = "Lade Daten...";
     render();
   });
 
-  const hkbCount = DATA.ET.handlungskompetenzbereiche.length;
-  const hkCount = DATA.ET.handlungskompetenzbereiche.reduce((s, h) => s + h.handlungskompetenzen.length, 0);
-  const lkCount = DATA.ET.handlungskompetenzbereiche.reduce((s, h) => s + h.handlungskompetenzen.reduce((s2, hk) => s2 + hk.lernkriterien.length, 0), 0);
+  const hkbCount = DATA[JOB].handlungskompetenzbereiche.length;
+  const hkCount = DATA[JOB].handlungskompetenzbereiche.reduce((s, h) => s + h.handlungskompetenzen.length, 0);
+  const lkCount = DATA[JOB].handlungskompetenzbereiche.reduce((s, h) => s + h.handlungskompetenzen.reduce((s2, hk) => s2 + hk.lernkriterien.length, 0), 0);
   document.getElementById("subtitle").textContent = flatLZs.length + " Lernziele, " + lkCount + " Leistungskriterien in " + hkbCount + " Handlungskompetenzbereichen und " + hkCount + " Handlungskompetenzen";
 
   const infoToggle = document.getElementById('infoToggle');
   const infoContent = document.getElementById('infoContent');
-  infoToggle.addEventListener('click', () => {
-    infoToggle.classList.toggle('open');
-    infoContent.classList.toggle('open');
-  });
+  if (infoToggle && infoContent) {
+    infoToggle.addEventListener('click', () => {
+      infoToggle.classList.toggle('open');
+      infoContent.classList.toggle('open');
+    });
+  }
 
   const pdfToggleBtn = document.getElementById('pdfToggleBtn');
   const pdfDropdownMenu = document.getElementById('pdfDropdownMenu');
-  pdfToggleBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    pdfDropdownMenu.classList.toggle('show');
-  });
-  document.addEventListener('click', () => {
-    pdfDropdownMenu.classList.remove('show');
-  });
-  pdfDropdownMenu.addEventListener('click', (e) => {
-    e.stopPropagation();
-  });
+  if (pdfToggleBtn && pdfDropdownMenu) {
+    pdfToggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      pdfDropdownMenu.classList.toggle('show');
+    });
+    document.addEventListener('click', () => {
+      pdfDropdownMenu.classList.remove('show');
+    });
+    pdfDropdownMenu.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+  }
 
   function applyHighlight() {
     const hl = state.highlight;

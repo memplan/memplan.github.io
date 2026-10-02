@@ -1,9 +1,15 @@
-import json, os
+import argparse, json, os
 from collections import OrderedDict
 
+parser = argparse.ArgumentParser(
+    description='Deduplicate Lernziele in a single per-job lehrplan JSON file.')
+parser.add_argument('path', nargs='?', default='lehrplan.json',
+                    help='Path to a per-job lehrplan JSON (default: lehrplan.json).')
+args = parser.parse_args()
+
 script_dir = os.path.dirname(os.path.abspath(__file__))
-src_path = os.path.join(script_dir, 'lehrplan.json')
-dst_path = os.path.join(script_dir, 'lehrplan.json')
+src_path = args.path if os.path.isabs(args.path) else os.path.join(script_dir, args.path)
+dst_path = src_path
 
 with open(src_path, encoding='utf-8') as f:
     data = json.load(f)

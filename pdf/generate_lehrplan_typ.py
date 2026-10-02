@@ -3,15 +3,15 @@
 
 Usage examples:
   # All goals for the Lernort Betrieb, no semester split
-  python3 generate_lehrplan_typ.py data/lehrplan.json --lernort BE -o output/Lernziele_Elektroniker_Betrieb.typ
+  python3 generate_lehrplan_typ.py data/lehrplan_ET.json --lernort BE -o output/Lernziele_Elektroniker_Betrieb.typ
 
   # All goals for the Berufsschule, one chapter per semester
-  python3 generate_lehrplan_typ.py data/lehrplan.json --lernort BFS --by-semester -o output/Lernziele_Elektroniker_Berufsschule.typ
+  python3 generate_lehrplan_typ.py data/lehrplan_ET.json --lernort BFS --by-semester -o output/Lernziele_Elektroniker_Berufsschule.typ
 
   # Hide the long HK descriptions, signatures only on LK rows
-  python3 generate_lehrplan_typ.py data/lehrplan.json --no-descriptions --signature lk -o output/Lernziele_Elektroniker.typ
+  python3 generate_lehrplan_typ.py data/lehrplan_ET.json --no-descriptions --signature lk -o output/Lernziele_Elektroniker.typ
 
-The input may be the full data/lehrplan.json or any subset sharing its schema
+The input may be the full data/lehrplan_<BPL>.json or any subset sharing its schema
 ({"ET": {"handlungskompetenzbereiche": [...]}} or directly {"handlungskompetenzbereiche": [...]}).
 
 The Typst layout lives in the Jinja2 templates under templates/:
@@ -24,9 +24,12 @@ The Typst layout lives in the Jinja2 templates under templates/:
 import argparse
 import datetime
 import json
+import re
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+
+JOBS_PATH = Path(__file__).resolve().parent.parent / "data" / "jobs.json"
 
 LERNORT_NAMES = {
     "BE": "Betrieb (BE)",
@@ -34,6 +37,28 @@ LERNORT_NAMES = {
     "üK": "Überbetriebliche Kurse (üK)",
     "ÜK": "Überbetriebliche Kurse (üK)",
 }
+
+# Defaults matching the ET/neutral web palette; per-job values come from jobs.json.
+DEFAULT_ACCENT = "#16213e"
+DEFAULT_ACCENT_SOFT = "#e9edf5"
+
+
+def load_jobs():
+    with open(JOBS_PATH, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def job_for_input(path):
+    """Look up the job metadata for a lehrplan_<CODE>.json input (or {} fallback)."""
+    m = re.search(r"lehrplan_([A-Z]{2})\.json$", str(path))
+    if not m:
+        return {}, ""
+    code = m.group(1)
+    return load_jobs().get(code, {}), code
+
+
+def job_name_of(job, code):
+    return job.get("title") or (f"Lernziele {code} EFZ" if code else "Lernziele")
 
 OUTPUT_NAMES = {
     "BE": "Lernziele_Elektroniker_Betrieb",
@@ -64,12 +89,12 @@ def as_list(v):
 
 
 def min_sem(obj):
-    sems = [int(x) for x in as_list(obj.get("Semester"))]
+    sems = [int(x) for x in as_list(obj.get("Semester")) if str(x).strip().isdigit()]
     return min(sems) if sems else 999
 
 
 def fmt_semesters(arr):
-    nums = sorted({int(x) for x in as_list(arr)})
+    nums = sorted({int(x) for x in as_list(arr) if str(x).strip().isdigit()})
     if not nums:
         return ""
     parts = []
@@ -113,6 +138,10 @@ def build_tree(hkbs, lernorte):
     return tree
 
 
+def sems_of(obj):
+    return {int(x) for x in as_list(obj.get("Semester")) if str(x).strip().isdigit()}
+
+
 def semester_chapters(tree):
     """Split the tree into one chapter per semester.
 
@@ -127,9 +156,9 @@ def semester_chapters(tree):
                 lk, lzs = item["lk"], item["lzs"]
                 if lzs:
                     for lz in lzs:
-                        sems.update(int(x) for x in as_list(lz.get("Semester")))
+                        sems.update(sems_of(lz))
                 else:
-                    sems.update(int(x) for x in as_list(lk.get("Semester")))
+                    sems.update(sems_of(lk))
 
     chapters = []
     for s in sorted(sems):
@@ -141,11 +170,10 @@ def semester_chapters(tree):
                 for item in hk["lks"]:
                     lk, lzs = item["lk"], item["lzs"]
                     if lzs:
-                        active = [lz for lz in lzs
-                                  if s in {int(x) for x in as_list(lz.get("Semester"))}]
+                        active = [lz for lz in lzs if s in sems_of(lz)]
                         if active:
                             lks.append({"lk": lk, "lzs": active})
-                    elif s in {int(x) for x in as_list(lk.get("Semester"))}:
+                    elif s in sems_of(lk):
                         lks.append({"lk": lk, "lzs": []})
                 if lks:
                     hks.append({"hk": hk["hk"], "lks": lks})
@@ -243,6 +271,8 @@ def build_overview(hkbs):
 
 def build_context(args):
     data = json.load(open(args.input, encoding="utf-8"))
+    job, code = job_for_input(args.input)
+    name = job_name_of(job, code)
     tree = build_tree(get_hkbs(data), args.lernort or None)
     has_lz = any(item["lzs"] for h in tree for hk in h["hks"] for item in hk["lks"])
 
@@ -266,12 +296,16 @@ def build_context(args):
             "length": length,
         })
 
+    beruf = job.get("name") or name
     return {
-        "title": "Lernziele Elektroniker EFZ",
-        "doc_title": doc_title_for(args),
+        "title": name,
+        "doc_title": doc_title_for(args, name),
         "subtitle": subtitle_for(args),
+        "job_name": beruf,
+        "accent": job.get("accent", DEFAULT_ACCENT),
+        "accent_soft": job.get("accentSoft", DEFAULT_ACCENT_SOFT),
         "today": datetime.date.today().strftime("%d.%m.%Y"),
-        "footer": "Lernziele gemäss Bildungsplan Elektroniker/in EFZ",
+        "footer": f"Lernziele gemäss Bildungsplan {beruf}",
         "fields": fields,
         "by_semester": args.by_semester,
         "show_desc": args.descriptions,
@@ -293,8 +327,8 @@ def render(context, template_dir=TEMPLATE_DIR):
     return env.get_template("base.typ.j2").render(**context)
 
 
-def doc_title_for(args):
-    return "Lernziele Elektroniker EFZ \u2013 " + subtitle_for(args)
+def doc_title_for(args, name="Lernziele"):
+    return f"{name} \u2013 " + subtitle_for(args)
 
 
 def subtitle_for(args):
